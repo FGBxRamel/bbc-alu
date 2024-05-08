@@ -43,7 +43,15 @@ class CPUEnum():
     def SRA1(self):
         return 512
 
+    @property
+    def ALL(self):
+        return (self.ADD | self.AND | self.ENA |
+            self.ENB | self.INC | self.INV |
+            self.NEG | self.OR | self.SLL8 |
+            self.SRA1)
+
 class BBusEnum():
+    """A class for bitflagging the BBus input."""
     def __init__(self):
         pass
 
@@ -83,7 +91,14 @@ class BBusEnum():
     def OPC(self):
         return 256
 
+    @property
+    def ALL(self):
+        return (self.CPP | self.LV | self.MBR |
+               self.MBRU | self.MDR | self.OPC |
+               self.PC | self.SP | self.TOS)
+
 class CBusEnum():
+    """A class for bitflagging the CBus output."""
     def __init__(self):
         pass
     
@@ -122,3 +137,9 @@ class CBusEnum():
     @property
     def OPC(self):
         return 256
+
+    @property
+    def ALL(self):
+        return (self.CPP | self.H | self.LV |
+               self.MAR | self.MDR | self.OPC |
+               self.PC | self.SP | self.TOS)
