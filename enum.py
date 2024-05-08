@@ -1,3 +1,4 @@
+# pyright: reportShadowedImports=false
 class CPUEnum():
     """A class for bitflagging the CPU commands."""
     def __init__(self):
