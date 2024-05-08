@@ -46,6 +46,7 @@ class Alu():
 
     def _processCPU(self, cpuFlag, abusData, bbusData):
         """Processes the CPU flag and returns the output (cbusData)."""
+        cbusData = 0
         # Make the operation
         cpuOperation = cpuFlag & cpuEnum.OPERATIONS
         if cpuOperation % 2 != 0 or cpuOperation == 0:
