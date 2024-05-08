@@ -1,12 +1,12 @@
-# pyright: reportShadowedImports=false
 class CPUEnum():
     """A class for bitflagging the CPU commands."""
+
     def __init__(self):
         pass
-    
+
     @property
     def AND(self):
-        return 1
+        return 1024
 
     @property
     def OR(self):
@@ -47,18 +47,24 @@ class CPUEnum():
     @property
     def ALL(self):
         return (self.ADD | self.AND | self.ENA |
-            self.ENB | self.INC | self.INV |
-            self.NEG | self.OR | self.SLL8 |
-            self.SRA1)
+                self.ENB | self.INC | self.INV |
+                self.NEG | self.OR | self.SLL8 |
+                self.SRA1)
+
+    @property
+    def OPERATIONS(self):
+        return (self.AND | self.OR | self.NEG | self.ADD)
+
 
 class BBusEnum():
     """A class for bitflagging the BBus input."""
+
     def __init__(self):
         pass
 
     @property
     def MDR(self):
-        return 1
+        return 512
 
     @property
     def PC(self):
@@ -95,17 +101,19 @@ class BBusEnum():
     @property
     def ALL(self):
         return (self.CPP | self.LV | self.MBR |
-               self.MBRU | self.MDR | self.OPC |
-               self.PC | self.SP | self.TOS)
+                self.MBRU | self.MDR | self.OPC |
+                self.PC | self.SP | self.TOS)
+
 
 class CBusEnum():
     """A class for bitflagging the CBus output."""
+
     def __init__(self):
         pass
-    
+
     @property
     def MDR(self):
-        return 1
+        return 512
 
     @property
     def PC(self):
@@ -118,7 +126,7 @@ class CBusEnum():
     @property
     def H(self):
         return 8
-    
+
     @property
     def SP(self):
         return 16
@@ -142,5 +150,5 @@ class CBusEnum():
     @property
     def ALL(self):
         return (self.CPP | self.H | self.LV |
-               self.MAR | self.MDR | self.OPC |
-               self.PC | self.SP | self.TOS)
+                self.MAR | self.MDR | self.OPC |
+                self.PC | self.SP | self.TOS)
