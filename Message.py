@@ -20,4 +20,4 @@ class Message:
                 value = int(messageList[2], 16)
             return Message(messageList[0], messageList[1], value)
         except:
-            return Message('', '');
+            return False
