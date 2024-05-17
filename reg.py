@@ -4,10 +4,10 @@ from Message import Message
 from Register import Register
 
 registerList = [
-    Register("MDR", 0),
-    Register("MAR", 1),
-    Register("PC", 22),
-    Register("MBR", 14),
+    Register("MDR"),
+    Register("MAR"),
+    Register("PC"),
+    Register("MBR"),
     Register("SP"),
     Register("LV"),
     Register("CPP"),
@@ -17,19 +17,19 @@ registerList = [
 ]
 
 registers = {}
-for register in registers:
-    registers[register.name] = register
-
-currentIndex = 0
+for register in registerList:
+    registers[register.name.lower()] = register
 
 while True:
     receivedMessage = radio.receive()
     if receivedMessage:
         message = Message.parseMessage(receivedMessage)
-        if message.value == None:
+        if message and message.receiver in registers and message.value == None:
+            message = Message(message.receiver, "alu", registers[message.receiver].value)
+            radio.send(message.serialize())
+        elif message and message.receiver in registers:
+            registers[message.receiver].value = message.value
+            display.scroll(registers[message.receiver].text, delay=50, wait=False, loop=True)
+        else: # not relevant, message can be discarded
             pass
-    if button_a.was_pressed():
-        currentIndex = (currentIndex + 1) % len(registerList)
-    if button_b.was_pressed():
-        currentIndex = 0;
-    display.scroll(registerList[currentIndex].text, delay=30)
+    

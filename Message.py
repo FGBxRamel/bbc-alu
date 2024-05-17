@@ -1,8 +1,8 @@
 class Message:
-    def __init__(self, sender, receiver, value = None):
+    def __init__(self, receiver, sender, value = None):
         # value = None wenn Wert verlangt werden soll 
-        self.sender = sender
         self.receiver = receiver
+        self.sender = sender
         self.value = value
 
     def serialize(self):
@@ -13,8 +13,11 @@ class Message:
 
     @staticmethod
     def parseMessage(message):
-        messageList = message.split(",")
-        value = None
-        if messageList != "null":
-            value = int(messageList[2], 16)
-        return Message(messageList[0], messageList[1], value)
+        try:
+            messageList = message.split(",")
+            value = None
+            if messageList[2] != "null":
+                value = int(messageList[2], 16)
+            return Message(messageList[0], messageList[1], value)
+        except:
+            return Message('', '');
