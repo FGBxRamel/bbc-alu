@@ -3,8 +3,6 @@ import radio
 from time import sleep
 from microbit import display
 
-cpuEnum, bbusEnum, cbusEnum = CPUEnum(), BBusEnum(), CBusEnum()
-
 
 class Alu():
     """The Aritmetic Logic Unit takes commands and processes them."""
@@ -36,15 +34,15 @@ class Alu():
             cpuFlag, bbusFlag, cbusFlag = self._parseCommand(message)
 
             # If we don't put the output somewhere we can just stop
-            if not (cbusFlag & cbusEnum.ALL):
+            if not (cbusFlag & CBusEnum.ALL):
                 continue
 
             bbusRegister = self._getRegisterString(bbusFlag)
 
             bbusData = self._getRegister(bbusRegister) if (
-                cpuFlag & cpuEnum.ENB) else 0
+                cpuFlag & CPUEnum.ENB) else 0
             abusData = self._getRegister("h") if (
-                cpuFlag & cpuEnum.ENA) else 0
+                cpuFlag & CPUEnum.ENA) else 0
 
             cbusData = self._processCPU(cpuFlag, abusData, bbusData)
             self._setRegisters(cbusFlag, cbusData)
@@ -54,33 +52,33 @@ class Alu():
         """Processes the CPU flag and returns the output (cbusData)."""
         cbusData: int = 0
         # Check for invert
-        if (cpuFlag & cpuEnum.ENA) and (cpuFlag & cpuEnum.INV):
+        if (cpuFlag & CPUEnum.ENA) and (cpuFlag & CPUEnum.INV):
             abusData = ~abusData
 
         # Make the operation
-        cpuOperation: int = cpuFlag & cpuEnum.OPERATIONS
+        cpuOperation: int = cpuFlag & CPUEnum.OPERATIONS
         if cpuOperation % 2 != 0 or cpuOperation == 0:
             print("Multiple or no CPU Operation given, assuming ADD.")
-            cpuOperation = cpuEnum.ADD
+            cpuOperation = CPUEnum.ADD
 
-        if cpuFlag == cpuEnum.AND:
+        if (cpuFlag & CPUEnum.AND):
             cbusData = abusData & bbusData
-        elif cpuFlag == cpuEnum.OR:
+        elif (cpuFlag & CPUEnum.OR):
             cbusData = abusData | bbusData
-        elif cpuFlag == cpuEnum.NEG:
+        elif (cpuFlag & CPUEnum.NEG):
             cbusData = -bbusData
-        elif cpuFlag == cpuEnum.ADD:
+        elif (cpuFlag & CPUEnum.ADD):
             cbusData = bbusData + abusData
 
         # Check the other CPU Flags
 
-        if (cpuFlag & cpuEnum.INC):
+        if (cpuFlag & CPUEnum.INC):
             cbusData += 1
 
         # Check the shifts
-        if (cpuFlag & cpuEnum.SLL8):
+        if (cpuFlag & CPUEnum.SLL8):
             cbusData << 8
-        elif (cpuFlag & cpuEnum.SRA1):
+        elif (cpuFlag & CPUEnum.SRA1):
             cbusData >> 1
 
         return cbusData
@@ -133,7 +131,7 @@ class Alu():
         elif register & (BBusEnum.LV | CBusEnum.LV):
             register_name = "lv"
             flag = CBusEnum.LV
-        elif register & (BBusEnum.CPP | cbusEnum.CPP):
+        elif register & (BBusEnum.CPP | CBusEnum.CPP):
             register_name = "cpp"
             flag = CBusEnum.CPP
         elif register & (BBusEnum.OPC | CBusEnum.OPC):
