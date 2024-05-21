@@ -49,6 +49,10 @@ class Alu():
     def _processCPU(self, cpuFlag: int, abusData: int, bbusData: int) -> int:
         """Processes the CPU flag and returns the output (cbusData)."""
         cbusData: int = 0
+        # Check for invert
+        if (cpuFlag & cpuEnum.ENA) and (cpuFlag & cpuEnum.INV):
+            abusData = ~abusData
+
         # Make the operation
         cpuOperation: int = cpuFlag & cpuEnum.OPERATIONS
         if cpuOperation % 2 != 0 or cpuOperation == 0:
@@ -65,8 +69,8 @@ class Alu():
             cbusData = bbusData + abusData
 
         # Check the other CPU Flags
-        # TODO See what INV operation does and implement it
-        if (cpuFlag & cpuEnum.INC) == cpuEnum.INC:
+
+        if (cpuFlag & cpuEnum.INC):
             cbusData += 1
 
         # Check the shifts
