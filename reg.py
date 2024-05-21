@@ -29,7 +29,7 @@ while True:
             radio.send(message.serialize())
         elif message and message.receiver in registers:
             registers[message.receiver].value = message.value
-            display.scroll(registers[message.receiver].text, delay=50, wait=False, loop=True)
+            display.scroll(registers[message.receiver].text, delay=100, wait=False, loop=True)
         else: # not relevant, message can be discarded
             pass
     
