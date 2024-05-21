@@ -91,10 +91,8 @@ class Alu():
     def _setRegisters(self, registers: int, data: int):
         """Puts data into a specified register."""
         data: str = hex(data)[2:]
-
-        # TODO Sort out the registers
-
-        message: str = "alu," + + "," + data
+        register = self._getRegisterString(registers)
+        message: str = "alu," + register + "," + data
         radio.send(message)
 
     def _getRegisterString(self, register: int) -> str:
