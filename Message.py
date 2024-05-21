@@ -1,5 +1,5 @@
 class Message:
-    def __init__(self, receiver, sender, value = None):
+    def __init__(self, sender, receiver, value = None):
         # value = None wenn Wert verlangt werden soll 
         self.receiver = receiver
         self.sender = sender
