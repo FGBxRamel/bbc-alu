@@ -1,154 +1,42 @@
-class CPUEnum():
+class CPUEnum:
     """A class for bitflagging the CPU commands."""
-
-    def __init__(self):
-        pass
-
-    @property
-    def AND(self):
-        return 1024
-
-    @property
-    def OR(self):
-        return 2
-
-    @property
-    def NEG(self):
-        return 4
-
-    @property
-    def ADD(self):
-        return 8
-
-    @property
-    def ENA(self):
-        return 16
-
-    @property
-    def ENB(self):
-        return 32
-
-    @property
-    def INV(self):
-        return 64
-
-    @property
-    def INC(self):
-        return 128
-
-    @property
-    def SLL8(self):
-        return 256
-
-    @property
-    def SRA1(self):
-        return 512
-
-    @property
-    def ALL(self):
-        return (self.ADD | self.AND | self.ENA |
-                self.ENB | self.INC | self.INV |
-                self.NEG | self.OR | self.SLL8 |
-                self.SRA1)
-
-    @property
-    def OPERATIONS(self):
-        return (self.AND | self.OR | self.NEG | self.ADD)
+    AND = 1024
+    OR = 2
+    NEG = 4
+    ADD = 8
+    ENA = 16
+    ENB = 32
+    INV = 64
+    INC = 128
+    SLL8 = 256
+    SRA1 = 512
+    ALL = (ADD | AND | ENA | ENB | INC | INV | NEG | OR | SLL8 | SRA1)
+    OPERATIONS = (AND | OR | NEG | ADD)
 
 
-class BBusEnum():
+class BBusEnum:
     """A class for bitflagging the BBus input."""
-
-    def __init__(self):
-        pass
-
-    @property
-    def MDR(self):
-        return 512
-
-    @property
-    def PC(self):
-        return 2
-
-    @property
-    def MBR(self):
-        return 4
-
-    @property
-    def MBRU(self):
-        return 8
-
-    @property
-    def SP(self):
-        return 16
-
-    @property
-    def LV(self):
-        return 32
-
-    @property
-    def CPP(self):
-        return 64
-
-    @property
-    def TOS(self):
-        return 128
-
-    @property
-    def OPC(self):
-        return 256
-
-    @property
-    def ALL(self):
-        return (self.CPP | self.LV | self.MBR |
-                self.MBRU | self.MDR | self.OPC |
-                self.PC | self.SP | self.TOS)
+    MDR = 512
+    PC = 2
+    MBR = 4
+    MBRU = 8
+    SP = 16
+    LV = 32
+    CPP = 64
+    TOS = 128
+    OPC = 256
+    ALL = (CPP | LV | MBR | MBRU | MDR | OPC | PC | SP | TOS)
 
 
-class CBusEnum():
+class CBusEnum:
     """A class for bitflagging the CBus output."""
-
-    def __init__(self):
-        pass
-
-    @property
-    def MDR(self):
-        return 512
-
-    @property
-    def PC(self):
-        return 2
-
-    @property
-    def MAR(self):
-        return 4
-
-    @property
-    def H(self):
-        return 8
-
-    @property
-    def SP(self):
-        return 16
-
-    @property
-    def LV(self):
-        return 32
-
-    @property
-    def CPP(self):
-        return 64
-
-    @property
-    def TOS(self):
-        return 128
-
-    @property
-    def OPC(self):
-        return 256
-
-    @property
-    def ALL(self):
-        return (self.CPP | self.H | self.LV |
-                self.MAR | self.MDR | self.OPC |
-                self.PC | self.SP | self.TOS)
+    MDR = 512
+    PC = 2
+    MAR = 4
+    H = 8
+    SP = 16
+    LV = 32
+    CPP = 64
+    TOS = 128
+    OPC = 256
+    ALL = (CPP | H | LV | MAR | MDR | OPC | PC | SP | TOS)
