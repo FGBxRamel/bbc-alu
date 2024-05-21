@@ -1,6 +1,7 @@
 from enums import *
 import radio
 from time import sleep
+from microbit import display
 
 cpuEnum, bbusEnum, cbusEnum = CPUEnum(), BBusEnum(), CBusEnum()
 
@@ -23,11 +24,14 @@ class Alu():
 
     def start(self) -> None:
         """Starts the ALU."""
+        display.show("#Started")
         while True:
+            display.show("#Waiting")
             message = None
             while message is None:
                 sleep(0.05)
                 message = radio.receive()
+            display.show("#Processing")
             # NOTE Wait for comms team to see what we *actually* get
             cpuFlag, bbusFlag, cbusFlag = self._parseCommand(message)
 
