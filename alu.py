@@ -36,21 +36,21 @@ class Alu():
             cpuFlag, bbusFlag, cbusFlag = self._parseCommand(message)
 
             # If we don't put the output somewhere we can just stop
-            if cbusFlag & cbusEnum.ALL == 0:
+            if not (cbusFlag & cbusEnum.ALL):
                 continue
 
             bbusRegister = self._getRegisterString(bbusFlag)
 
             bbusData = self._getRegister(bbusRegister) if (
                 cpuFlag & cpuEnum.ENB) else 0
-            abusData = self._getRegister() if (
+            abusData = self._getRegister("h") if (
                 cpuFlag & cpuEnum.ENA) else 0
 
             cbusData = self._processCPU(cpuFlag, abusData, bbusData)
-            cbusRegister = self._getRegisterString(cbusFlag)
-            self._setRegisters()
+            self._setRegisters(cbusFlag, cbusData)
 
-    def _processCPU(self, cpuFlag: int, abusData: int, bbusData: int) -> int:
+    @staticmethod
+    def _processCPU(cpuFlag: int, abusData: int, bbusData: int) -> int:
         """Processes the CPU flag and returns the output (cbusData)."""
         cbusData: int = 0
         # Check for invert
@@ -78,14 +78,15 @@ class Alu():
             cbusData += 1
 
         # Check the shifts
-        if (cpuFlag & cpuEnum.SLL8) == cpuEnum.SLL8:
+        if (cpuFlag & cpuEnum.SLL8):
             cbusData << 8
-        elif (cpuFlag & cpuEnum.SRA1) == cpuEnum.SRA1:
+        elif (cpuFlag & cpuEnum.SRA1):
             cbusData >> 1
 
         return cbusData
 
-    def _getRegister(self, register: str) -> int:
+    @staticmethod
+    def _getRegister(register: str) -> int:
         """Gets the data that a specified register holds. Returns 0 if no data is returned."""
         message: str = "alu," + register + ",null"
         radio.send(message)
@@ -99,32 +100,56 @@ class Alu():
     def _setRegisters(self, registers: int, data: int):
         """Puts data into a specified register."""
         data: str = hex(data)[2:]
-        register = self._getRegisterString(registers)
-        message: str = "alu," + register + "," + data
-        radio.send(message)
+        while registers:
+            registerName, registerFlag = self._getRegisterString(
+                registers, True)
+            message: str = "alu," + registerName + "," + data
+            radio.send(message)
+            registers = registers - registerFlag
 
-    def _getRegisterString(self, register: int) -> str:
+    @staticmethod
+    def _getRegisterString(register: int, returnFlag=False):
+        """
+        Translates a flag into the name string.\n
+        If `returnFlag` is True it returns the name and the flag.
+        """
         register_name = None
+        flag = None
         if register & (BBusEnum.MDR | CBusEnum.MDR):
             register_name = "mdr"
+            flag = CBusEnum.MDR
         elif register & (BBusEnum.PC | CBusEnum.PC):
             register_name = "pc"
+            flag = CBusEnum.PC
         elif register & BBusEnum.MBR:
             register_name = "mbr"
+            flag = BBusEnum.MBR
         elif register & BBusEnum.MBR:
             register_name = "mbru"
+            flag = BBusEnum.MBRU
         elif register & (BBusEnum.SP | CBusEnum.SP):
             register_name = "sp"
+            flag = CBusEnum.SP
         elif register & (BBusEnum.LV | CBusEnum.LV):
             register_name = "lv"
+            flag = CBusEnum.LV
         elif register & (BBusEnum.CPP | cbusEnum.CPP):
             register_name = "cpp"
+            flag = CBusEnum.CPP
         elif register & (BBusEnum.OPC | CBusEnum.OPC):
             register_name = "opc"
+            flag = CBusEnum.OPC
         elif register & (BBusEnum.TOS | CBusEnum.TOS):
             register_name = "tos"
+            flag = CBusEnum.TOS
         elif register & CBusEnum.MAR:
             register_name = "mar"
+            flag = CBusEnum.MAR
         elif register & CBusEnum.H:
             register_name = "h"
-        return register_name
+            flag = CBusEnum.H
+
+        if not returnFlag:
+            return register_name
+        else:
+            return register_name, flag
