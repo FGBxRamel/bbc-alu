@@ -11,9 +11,9 @@ OM sends command addressed to alu in the following format:
 "ALU#<H>#<B>#<COMMAND>\r\n"
 ```
 the message is seperated by '#' and ends with "\r\n"
-[H] is "H" if the current micro command has "ena" set, else is "0" *
-[B] the name of the register to be put on the bbus if the current micro command has "enb" set, else is "0" *
-[COMMAND] can be "&", "|", "-", or "+"
+\<H\> is "H" if the current micro command has "ena" set, else is "0" *
+\<B\> the name of the register to be put on the bbus if the current micro command has "enb" set, else is "0" *
+\<COMMAND\> can be "&", "|", "-", or "+"
 
 coms sends the message to alu in the following format:
 ```
@@ -33,8 +33,8 @@ The message has the following format:
 ```
 "<register>#<value>\r\n"
 ```
-<register> is the name of the register in which the value is to be saved
-<value> is the value which is to be saved
+\<register\> is the name of the register in which the value is to be saved
+\<value\> is the value which is to be saved
 
 coms sends the message to the register in the following format:
 ```
